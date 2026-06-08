@@ -48,7 +48,7 @@ uint32_t axi_dsp_get_apply();
 void axi_dsp_set_test_point(uint32_t tp);
 void axi_dsp_set_channel(uint32_t channel);
 void axi_dsp_set_compensation_mode(uint32_t compensation_mode);
-void axi_dsp_set_manual_compensation(cmplx_f64 manual_comp);
+void axi_dsp_set_manual_compensation(cmplx_f64 manual_comp, uint32_t channel);
 void axi_dsp_set_diagram_0(cmplx_f64 diagram, uint32_t channel);
 void axi_dsp_set_diagram_1(cmplx_f64 diagram, uint32_t channel);
 void axi_dsp_set_diagram_2(cmplx_f64 diagram, uint32_t channel);
