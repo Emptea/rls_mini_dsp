@@ -41,7 +41,7 @@ csr_motion_selector_t axi_dsp_get_motion_selector();
 float axi_dsp_get_diagram_angle(uint32_t channel);
 csr_output_source_t axi_dsp_get_output_source();
 csr_apu_rank_t axi_dsp_get_apu_rank();
-uint32_t axi_dsp_get_detector_level();
+uint32_t axi_dsp_get_detector_level(uint32_t num);
 float axi_dsp_get_azimuth_angle();
 uint32_t axi_dsp_get_apply();
 

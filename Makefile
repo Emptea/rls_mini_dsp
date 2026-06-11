@@ -1,14 +1,16 @@
 CXX := g++
-CXXFLAGS := -std=c++17 -Wall -Wextra -O2
+CXXFLAGS := -std=c++17 -Wall -Wextra -O2 -pthread
+LDFLAGS := -pthread -lreadline
 TARGET := cli
 
-SRCS := cli.cpp
+# Find all .cpp files in the current directory
+SRCS := $(wildcard *.cpp)
 OBJS := $(SRCS:.cpp=.o)
 
 all: $(TARGET)
 
 $(TARGET): $(OBJS)
-	$(CXX) $(CXXFLAGS) -o $@ $^
+	$(CXX) $(CXXFLAGS) -o $@ $^ $(LDFLAGS)
 
 %.o: %.cpp
 	$(CXX) $(CXXFLAGS) -c -o $@ $<

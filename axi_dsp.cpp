@@ -90,11 +90,25 @@ static uint32_t read_u32(uint32_t addr)
 
 uint32_t axi_dsp_init()
 {
+    printf("Debug: Trying to open /dev/rls_mini_pl\n");
+    
     fd = open("/dev/rls_mini_pl", O_RDWR);
     if (fd < 0) {
+        printf("Debug: open() failed with errno=%d\n", errno);
         perror("open");
-        return FD_ERR_NO_DEVICE;
+        
+        // Try with O_RDONLY as fallback
+        printf("Debug: Trying O_RDONLY\n");
+        fd = open("/dev/rls_mini_pl", O_RDONLY);
+        if (fd < 0) {
+            perror("open (readonly)");
+            return FD_ERR_NO_DEVICE;
+        }
+        printf("Debug: Opened readonly successfully\n");
+        return FD_ERR_NONE;
     }
+    
+    printf("Debug: Opened successfully, fd=%d\n", fd);
     return FD_ERR_NONE;
 }
 
@@ -139,7 +153,7 @@ uint32_t axi_dsp_get_compensation_mode()
 
 cmplx_f64 axi_dsp_get_manual_compensation(uint32_t channel)
 {
-    return read_cmplx_num(CSR_COMPENSATION_MODE_ADDR + (channel * 0x04));
+    return read_cmplx_num(CSR_MANUAL_COMPENSATION_0_ADDR + (channel * 0x04));
 }
 
 cmplx_f64 axi_dsp_get_diagram_0(uint32_t channel)
@@ -194,7 +208,7 @@ csr_motion_selector_t axi_dsp_get_motion_selector()
 
 float axi_dsp_get_diagram_angle(uint32_t channel)
 {
-    return read_angle(CSR_MOTION_SELECTOR_ADDR + (channel * 4));
+    return read_angle(CSR_DIAGRAM_ANGLE_0_ADDR + (channel * 4));
 }
 
 csr_output_source_t axi_dsp_get_output_source()
@@ -244,7 +258,7 @@ void axi_dsp_set_test_point(uint32_t tp)
 
 void axi_dsp_set_channel(uint32_t channel)
 {
-    axi_write(channel, CSR_TEST_POINT_ADDR);
+    axi_write(channel, CSR_CHANNEL_ADDR);
 }
 
 void axi_dsp_set_compensation_mode(uint32_t compensation_mode)
